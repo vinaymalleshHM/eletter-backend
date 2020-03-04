@@ -25,6 +25,9 @@ public class ELetterDAOImpl implements ELetterDAO {
 		EntityManager manager = factory.createEntityManager();
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
+//		letterInfoBean.getGeneratedDate().getNano(); 
+		System.out.println(letterInfoBean.getGeneratedDate().getNano());
+		System.out.println(letterInfoBean.getMailSentTime().getNano());
 		manager.persist(letterInfoBean);
 		transaction.commit();
 		return true;

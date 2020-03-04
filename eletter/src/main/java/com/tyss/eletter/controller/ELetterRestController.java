@@ -7,7 +7,9 @@ import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tyss.eletter.ELetterResponse.ELetterGenericResponse;
-import com.tyss.eletter.ELetterResponse.ELetterHRResponse;
+import com.tyss.eletter.ELetterResponse.ELetterMessage;
+import com.tyss.eletter.ELetterResponse.ELetterinformationResponse;
 import com.tyss.eletter.dto.LetterInfoBean;
 import com.tyss.eletter.service.ELetterService;
 
@@ -32,76 +35,66 @@ public class ELetterRestController {
 	private ELetterService service;
 	
 	@PostMapping(path = "/letterinformation",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ELetterGenericResponse register(@Valid @RequestBody LetterInfoBean letterInfoBean) {
+	public ResponseEntity<Object> register(@RequestBody LetterInfoBean letterInfoBean) {
 		ELetterGenericResponse response = new ELetterGenericResponse();
 		if (service.addLetterInformation(letterInfoBean)) {
-			response.setStatus(201);
-			response.setMessage("Succuss");
-			response.setDescription("letter information added succussfully");
+			response.setError(false);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		} else {
-			response.setStatus(401);
-			response.setMessage("Failure");
-			response.setDescription("letter information Couldn't added");
+			response.setError(true);
+			response.setMessage("unable add information");
+			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 		
 	}
 
-	
-	
 	@GetMapping(path = "/information",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ELetterHRResponse search(@RequestParam(name="empid",required = true)String empId) {
+	public ResponseEntity<Object> search(@RequestParam(name="empid",required = true)String empId) {
 		
 		List<LetterInfoBean> letterInfoBeans = service.search(empId);
 		
-		ELetterHRResponse response = new ELetterHRResponse();
-		
+		ELetterGenericResponse response = new ELetterGenericResponse();
+		ELetterMessage letterMessage = new ELetterMessage() ;
 		if (letterInfoBeans!= null && !letterInfoBeans.isEmpty()) {
-			response.setStatus(201);
-			response.setMessage("Succuss");
-			response.setDescription("Data Found");
-			response.setLetterInfoBeans(letterInfoBeans);
+			response.setError(false);
+			response.setData(letterInfoBeans);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		} else {
-			response.setStatus(401);
-			response.setMessage("Failure");
-			response.setDescription("Couldn't found the data");
+			response.setError(true);
+			response.setMessage("unable to get information");
+			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 		
 	}
 	
 	@DeleteMapping(path = "/delete/{empId}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ELetterGenericResponse deleteLetterInformation(@PathVariable String empId) {
+	public ResponseEntity<Object> deleteLetterInformation(@PathVariable String empId) {
 		
 		ELetterGenericResponse response = new ELetterGenericResponse();
-		
+		ELetterMessage letterMessage = new ELetterMessage() ;
 		if (service.deleteLetterInformation(empId)) {
-			response.setStatus(201);
-			response.setMessage("Succuss");
-			response.setDescription("deleted SccussFully");
+			response.setError(false);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		} else {
-			response.setStatus(401);
-			response.setMessage("Failure");
-			response.setDescription("Couldn't deleted");
+			response.setError(true);
+			response.setMessage("unable to delete data");
+			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 	}
 	
 	@DeleteMapping(path = "/deletebyid/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ELetterGenericResponse deleteLetterInformation(@PathVariable int id) {
+	public ResponseEntity<Object> deleteLetterInformation(@PathVariable int id) {
 		
 		ELetterGenericResponse response = new ELetterGenericResponse();
-		
+		ELetterMessage letterMessage = new ELetterMessage() ;
 		if (service.deleteLetterInformation(id)) {
-			response.setStatus(201);
-			response.setMessage("Succuss");
-			response.setDescription("deleted SccussFully");
+			response.setError(false);
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		} else {
-			response.setStatus(401);
-			response.setMessage("Failure");
-			response.setDescription("Couldn't deleted");
+			response.setError(true);
+			response.setMessage("unable to delete data");
+			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		return response;
 	}
 	
 }
