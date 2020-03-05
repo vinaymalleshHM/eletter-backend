@@ -2,7 +2,6 @@ package com.tyss.eletter.dto;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CollectionTable;
@@ -16,6 +15,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Data;
 
@@ -31,8 +32,8 @@ public class LetterInfoBean implements Serializable{
 	private int  sequenceNumber;
 	
 	@NotEmpty(message = "please enter value")
-	@Column(name = "generator_emp_id",length = 9)
-	@Size(min = 9 , max = 9)
+	@Column(name = "generator_emp_id",length = 6)
+	@Size(min = 6 , max = 6)
 	private String generatorEmpId;
 	
 	@Column(name = "generated_date")
@@ -52,5 +53,7 @@ public class LetterInfoBean implements Serializable{
 	@Column(name = "mail_sent_time")
 	private LocalDateTime  mailSentTime;
 
+	@Column(name = "is_active")
+	private boolean isActive;
 
 }

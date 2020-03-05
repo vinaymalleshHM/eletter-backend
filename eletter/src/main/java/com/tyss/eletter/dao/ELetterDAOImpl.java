@@ -1,6 +1,5 @@
 package com.tyss.eletter.dao;
 
-import java.time.Instant;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -21,16 +20,14 @@ public class ELetterDAOImpl implements ELetterDAO {
 
 
 	@Override
-	public boolean addLetterInformation(LetterInfoBean letterInfoBean) {
+	public LetterInfoBean addLetterInformation(LetterInfoBean letterInfoBean) {
 		EntityManager manager = factory.createEntityManager();
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
-//		letterInfoBean.getGeneratedDate().getNano(); 
-		System.out.println(letterInfoBean.getGeneratedDate().getNano());
-		System.out.println(letterInfoBean.getMailSentTime().getNano());
+		letterInfoBean.setActive(true);
 		manager.persist(letterInfoBean);
 		transaction.commit();
-		return true;
+		return letterInfoBean;
 		
 	}
 
@@ -46,32 +43,14 @@ public class ELetterDAOImpl implements ELetterDAO {
 	}
 
 
-	@Override
-	public boolean deleteLetterInformation(String empId) {
-		EntityManager manager = factory.createEntityManager();
-		EntityTransaction transaction = manager.getTransaction();
-		transaction.begin();
-		String jpql ="from LetterInfoBean where generatorEmpId=:empId";
-		TypedQuery< LetterInfoBean>  query = manager.createQuery(jpql, LetterInfoBean.class);
-		query.setParameter("empId", empId);
-		LetterInfoBean bean = query.getSingleResult();
-		LetterInfoBean record = manager.find(LetterInfoBean.class, bean.getSequenceNumber());
-		manager.remove(record);
-		transaction.commit();
-		return true;
-	}
-
+	
 	@Override
 	public boolean deleteLetterInformation(int id) {
 		EntityManager manager = factory.createEntityManager();
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
-		String jpql ="from LetterInfoBean where sequenceNumber=:id";
-		TypedQuery< LetterInfoBean>  query = manager.createQuery(jpql, LetterInfoBean.class);
-		query.setParameter("id", id);
-		LetterInfoBean bean = query.getSingleResult();
-		LetterInfoBean record = manager.find(LetterInfoBean.class, bean.getSequenceNumber());
-		manager.remove(record);
+		LetterInfoBean record = manager.find(LetterInfoBean.class, id);
+		record.setActive(false);
 		transaction.commit();
 		return true;
 	}

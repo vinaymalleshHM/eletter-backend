@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.tyss.eletter.dao.ELetterDAO;
+import com.tyss.eletter.dao.ELetterDAOImpl;
 import com.tyss.eletter.dto.LetterInfoBean;
 
 @Service
@@ -18,7 +19,7 @@ public class ELetterServiceImpl implements ELetterService{
 	
 	
 	@Override
-	public boolean addLetterInformation(LetterInfoBean letterInfoBean) {
+	public LetterInfoBean addLetterInformation(LetterInfoBean letterInfoBean) {
 			return dao.addLetterInformation(letterInfoBean);
 	}
 
@@ -27,10 +28,6 @@ public class ELetterServiceImpl implements ELetterService{
 		return dao.search(empId);
 	}
 
-	@Override
-	public boolean deleteLetterInformation(String empId) {
-		return dao.deleteLetterInformation(empId);
-	}
 	
 	@Override
 	public boolean deleteLetterInformation(int id) {
