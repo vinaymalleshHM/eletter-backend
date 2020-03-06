@@ -8,6 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,14 +21,14 @@ class ELetterDAOtest {
 
 	@Autowired
 	private ELetterDAO dao;
-	
+
 	LetterInfoBean infoBean ; 
-	
+
 	@BeforeEach
 	void createELetterObject() {
 		infoBean = new LetterInfoBean();
 	}
-	
+
 	@Test
 	void testAddLetterInformationWithNull() {
 		infoBean = null;
@@ -36,7 +37,7 @@ class ELetterDAOtest {
 		});
 	}
 
-	
+	@Disabled
 	@Test
 	void testAddLetterInformationWithValidData() {
 		LocalDateTime dateTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
@@ -45,7 +46,7 @@ class ELetterDAOtest {
 		toEmail.add("ghjk@gmail.com");
 		toEmail.add("qwer@gmail.com");
 		LetterInfoBean infoBean = new LetterInfoBean();
-		infoBean.setGeneratorEmpId("TYC123");
+		infoBean.setGeneratorEmpId("TYC456");
 		infoBean.setGeneratedDate(dateTime);
 		infoBean.setMailSentTime(dateTime);
 		infoBean.setToEmail(toEmail);
@@ -58,21 +59,45 @@ class ELetterDAOtest {
 			}
 		}
 	}
-	
+
 	@Test
 	void testSearchWithNull() {
-//		String name = null;
-//		LetterInfoBean a = dao.search(name);
-//		try {
-//			assert(NullPointerException.class, ()->{
-//			
-//			});
-//			
-//		} catch (Exception e) {
-//			for (StackTraceElement element : e.getStackTrace()) {
-//				System.out.println(element.toString());
-//			}
-//		}
+		String name = "abc123";
+		try {
+			boolean actual = dao.search(name).isEmpty();
+			boolean expected = true;
+			assertEquals(expected , actual);
+		} catch (Exception e) {
+			for (StackTraceElement element : e.getStackTrace()) {
+				System.out.println(element.toString());
+			}
+		}
 	}
-	
+
+	@Test
+	void testSearchWithValidData() {
+		String name = "tyc123";
+		try {
+			boolean actual = dao.search(name).isEmpty();
+			boolean expected = false;
+			assertEquals(expected, actual);
+		} catch (Exception e) {
+			for (StackTraceElement element : e.getStackTrace()) {
+				System.out.println(element.toString());
+			}
+		}
+	}
+
+	void testdeleteLetterInformationWithNotValidId() {
+		int id = 1;
+		try {
+			boolean actual = dao.deleteLetterInformation(id);
+			boolean expected = true;
+			assertEquals(expected, actual);
+		} catch (Exception e) {
+			for (StackTraceElement element : e.getStackTrace()) {
+				System.out.println(element.toString());
+			}
+		}
+	}
 }

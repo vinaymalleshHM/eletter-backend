@@ -39,6 +39,8 @@ public class ELetterDAOImpl implements ELetterDAO {
 		String jpql ="from LetterInfoBean where generatorEmpId=:empId";
 		TypedQuery< LetterInfoBean>  query = manager.createQuery(jpql, LetterInfoBean.class);
 		query.setParameter("empId", empId);
+		System.out.println(query);
+		System.out.println(query.getResultList());
 		return query.getResultList();
 	}
 
@@ -50,9 +52,14 @@ public class ELetterDAOImpl implements ELetterDAO {
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
 		LetterInfoBean record = manager.find(LetterInfoBean.class, id);
-		record.setActive(false);
-		transaction.commit();
-		return true;
+		if (record!=null) {
+			record.setActive(false);
+			transaction.commit();
+			return true;
+			
+		} else {
+			return false;
+		}
 	}
 
 

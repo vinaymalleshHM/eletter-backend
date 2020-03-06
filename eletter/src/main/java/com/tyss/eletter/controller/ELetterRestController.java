@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tyss.eletter.ELetterResponse.ELetterGenericResponse;
-import com.tyss.eletter.ELetterResponse.ELetterMessage;
 import com.tyss.eletter.dto.LetterInfoBean;
 import com.tyss.eletter.service.ELetterService;
 
@@ -38,17 +37,14 @@ public class ELetterRestController {
 	@PostMapping(path = "/letterinformation",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> register(@RequestBody LetterInfoBean letterInfoBean) {
 		ELetterGenericResponse response = new ELetterGenericResponse();
-		ELetterMessage message = new ELetterMessage();
 		LetterInfoBean infoBean = service.addLetterInformation(letterInfoBean);
 		if (infoBean!=null) {
-			message.setMessage("information added sussussfully");
 			response.setError(false);
-			response.setData(message);
+			response.setData("information added sussussfully");
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		} else {
-			message.setMessage("failed to add");
 			response.setError(true);
-			response.setData(message);
+			response.setData("failed to add");
 			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
@@ -60,15 +56,13 @@ public class ELetterRestController {
 		List<LetterInfoBean> letterInfoBeans = service.search(empId);
 		
 		ELetterGenericResponse response = new ELetterGenericResponse();
-		ELetterMessage message = new ELetterMessage() ;
 		if (letterInfoBeans!= null && !letterInfoBeans.isEmpty()) {
 			response.setError(false);
 			response.setData(letterInfoBeans);
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		} else {
 			response.setError(true);
-			message.setMessage("invalid id");
-			response.setData(message);
+			response.setData("invalid id");
 			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
@@ -80,14 +74,13 @@ public class ELetterRestController {
 	public ResponseEntity<Object> deleteLetterInformation(@PathVariable int id) {
 		
 		ELetterGenericResponse response = new ELetterGenericResponse();
-		ELetterMessage letterMessage = new ELetterMessage() ;
 		if (service.deleteLetterInformation(id)) {
 			response.setError(false);
+			response.setData("Deleted Succufully");
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		} else {
 			response.setError(true);
-			letterMessage.setMessage("Invalid Employee Id");
-			response.setData(letterMessage);
+			response.setData("Invalid Employee Id");
 			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
