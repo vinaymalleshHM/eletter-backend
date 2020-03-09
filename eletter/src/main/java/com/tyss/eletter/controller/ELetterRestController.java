@@ -40,7 +40,7 @@ public class ELetterRestController {
 		LetterInfoBean infoBean = service.addLetterInformation(letterInfoBean);
 		if (infoBean!=null) {
 			response.setError(false);
-			response.setData("information added sussussfully");
+			response.setData("information added successfully");
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		} else {
 			response.setError(true);
@@ -76,7 +76,7 @@ public class ELetterRestController {
 		ELetterGenericResponse response = new ELetterGenericResponse();
 		if (service.deleteLetterInformation(id)) {
 			response.setError(false);
-			response.setData("Deleted Succufully");
+			response.setData("Deleted Successfully");
 			return new ResponseEntity<Object>(response,HttpStatus.OK);
 		} else {
 			response.setError(true);

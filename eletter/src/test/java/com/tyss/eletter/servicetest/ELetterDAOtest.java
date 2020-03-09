@@ -37,7 +37,6 @@ class ELetterDAOtest {
 		});
 	}
 
-	@Disabled
 	@Test
 	void testAddLetterInformationWithValidData() {
 		LocalDateTime dateTime = LocalDateTime.of(2015, Month.JULY, 29, 19, 30, 40);
