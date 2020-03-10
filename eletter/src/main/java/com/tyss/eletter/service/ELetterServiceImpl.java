@@ -19,7 +19,7 @@ public class ELetterServiceImpl implements ELetterService{
 	
 	
 	@Override
-	public LetterInfoBean addLetterInformation(LetterInfoBean letterInfoBean) {
+	public boolean addLetterInformation(LetterInfoBean letterInfoBean) {
 			return dao.addLetterInformation(letterInfoBean);
 	}
 

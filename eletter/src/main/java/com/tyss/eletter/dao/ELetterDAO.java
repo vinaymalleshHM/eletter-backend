@@ -7,7 +7,7 @@ import com.tyss.eletter.dto.LetterInfoBean;
 
 public interface ELetterDAO {
 
-	LetterInfoBean addLetterInformation(LetterInfoBean letterInfoBean);
+	boolean addLetterInformation(LetterInfoBean letterInfoBean);
 	
 	List<LetterInfoBean> search(String name);
 	

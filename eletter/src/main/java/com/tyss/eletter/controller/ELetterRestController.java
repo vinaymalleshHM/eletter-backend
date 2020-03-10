@@ -37,8 +37,7 @@ public class ELetterRestController {
 	@PostMapping(path = "/letterinformation",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> register(@RequestBody LetterInfoBean letterInfoBean) {
 		ELetterGenericResponse response = new ELetterGenericResponse();
-		LetterInfoBean infoBean = service.addLetterInformation(letterInfoBean);
-		if (infoBean!=null) {
+		if (service.addLetterInformation(letterInfoBean)) {
 			response.setError(false);
 			response.setData("information added successfully");
 			return new ResponseEntity<Object>(response,HttpStatus.OK);

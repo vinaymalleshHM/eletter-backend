@@ -21,14 +21,14 @@ public class ELetterDAOImpl implements ELetterDAO {
 
 
 	@Override
-	public LetterInfoBean addLetterInformation(LetterInfoBean letterInfoBean) {
+	public boolean addLetterInformation(LetterInfoBean letterInfoBean) {
 		EntityManager manager = factory.createEntityManager();
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
 		letterInfoBean.setActive(true);
 		manager.persist(letterInfoBean);
 		transaction.commit();
-		return letterInfoBean;
+		return true;
 		
 	}
 
