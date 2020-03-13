@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.tyss.eletter.dto.LetterInfoBean;
+import com.tyss.eletter.dto.TimeTest;
 
 @Repository
 public class ELetterDAOImpl implements ELetterDAO {
@@ -61,6 +62,18 @@ public class ELetterDAOImpl implements ELetterDAO {
 		} else {
 			return false;
 		}
+	}
+
+
+
+	@Override
+	public boolean addTestTime(TimeTest test) {
+		EntityManager manager = factory.createEntityManager();
+		EntityTransaction transaction = manager.getTransaction();
+		transaction.begin();
+		manager.persist(test);
+		transaction.commit();
+		return true;
 	}
 
 

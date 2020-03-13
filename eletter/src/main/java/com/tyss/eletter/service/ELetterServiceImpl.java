@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.tyss.eletter.dao.ELetterDAO;
 import com.tyss.eletter.dao.ELetterDAOImpl;
 import com.tyss.eletter.dto.LetterInfoBean;
+import com.tyss.eletter.dto.TimeTest;
 
 @Service
 
@@ -32,6 +33,11 @@ public class ELetterServiceImpl implements ELetterService{
 	@Override
 	public boolean deleteLetterInformation(int id) {
 		return dao.deleteLetterInformation(id);
+	}
+
+	@Override
+	public boolean addTestTime(TimeTest test) {
+		return dao.addTestTime(test);
 	}
 
 }

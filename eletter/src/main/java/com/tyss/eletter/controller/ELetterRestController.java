@@ -23,17 +23,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tyss.eletter.ELetterResponse.ELetterGenericResponse;
 import com.tyss.eletter.dto.LetterInfoBean;
+import com.tyss.eletter.dto.TimeTest;
 import com.tyss.eletter.service.ELetterService;
 
 @RestController
 @CrossOrigin(origins = "*",allowedHeaders = "*",allowCredentials = "true")
 @RequestMapping("tyss")
 public class ELetterRestController {
-	
+
 	@Autowired
 	private ELetterService service;
-	
-	
+
+
 	@PostMapping(path = "/letterinformation",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> register(@RequestBody LetterInfoBean letterInfoBean) {
 		ELetterGenericResponse response = new ELetterGenericResponse();
@@ -46,14 +47,14 @@ public class ELetterRestController {
 			response.setData("failed to add");
 			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
+
 	}
 
 	@GetMapping(path = "/information",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> search(@RequestParam(name="empid",required = true)String empId) {
-		
+
 		List<LetterInfoBean> letterInfoBeans = service.search(empId);
-		
+
 		ELetterGenericResponse response = new ELetterGenericResponse();
 		if (letterInfoBeans!= null && !letterInfoBeans.isEmpty()) {
 			response.setError(false);
@@ -64,14 +65,13 @@ public class ELetterRestController {
 			response.setData("invalid id");
 			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
 	}
-	
-	
-	
+
+
+
 	@DeleteMapping(path = "/deletebyid/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Object> deleteLetterInformation(@PathVariable int id) {
-		
+
 		ELetterGenericResponse response = new ELetterGenericResponse();
 		if (service.deleteLetterInformation(id)) {
 			response.setError(false);
@@ -83,5 +83,20 @@ public class ELetterRestController {
 			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-	
+
+
+	@PostMapping(path = "/add",produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Object> register(@RequestBody TimeTest test) {
+		ELetterGenericResponse response = new ELetterGenericResponse();
+		if (service.addTestTime(test)) {
+			response.setError(false);
+			response.setData("test added successfully");
+			return new ResponseEntity<Object>(response,HttpStatus.OK);
+		} else {
+			response.setError(true);
+			response.setData("failed to add test");
+			return new ResponseEntity<Object>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 }

@@ -58,30 +58,28 @@ class TestService {
 		bean.setTypeOfLetter("HRletter");
 		bean.setMailSentTime(LocalDateTime.of(2020, Month.MARCH, 03, 10, 17, 28) );
 
-		LetterInfoBean bean1 = new LetterInfoBean();
-		bean1.setGeneratorEmpId("tyc123");
-		bean1.setGeneratedDate(LocalDateTime.of(2016, Month.NOVEMBER, 15, 12, 9, 13) );
-		bean1.setSequenceNumber(2);
-		bean1.setToEmail(toEmail);
-		bean1.setTypeOfLetter("HRletter");
-		bean1.setMailSentTime(LocalDateTime.of(2020, Month.MARCH, 03, 10, 17, 28) );
+		LetterInfoBean beanFirst = new LetterInfoBean();
+		beanFirst.setGeneratorEmpId("tyc123");
+		beanFirst.setGeneratedDate(LocalDateTime.of(2016, Month.NOVEMBER, 15, 12, 9, 13) );
+		beanFirst.setSequenceNumber(2);
+		beanFirst.setToEmail(toEmail);
+		beanFirst.setTypeOfLetter("HRletter");
+		beanFirst.setMailSentTime(LocalDateTime.of(2020, Month.MARCH, 03, 10, 17, 28) );
 
-		LetterInfoBean bean2 = new LetterInfoBean();
-		bean2.setGeneratorEmpId("tyc123");
-		bean2.setGeneratedDate(LocalDateTime.of(2016, Month.NOVEMBER, 15, 12, 9, 13) );
-		bean2.setSequenceNumber(3);
-		bean2.setToEmail(toEmail);
-		bean2.setTypeOfLetter("HRletter");
-		bean2.setMailSentTime(LocalDateTime.of(2020, Month.MARCH, 03, 10, 17, 28) );
+		LetterInfoBean beanSecond = new LetterInfoBean();
+		beanSecond.setGeneratorEmpId("tyc123");
+		beanSecond.setGeneratedDate(LocalDateTime.of(2016, Month.NOVEMBER, 15, 12, 9, 13) );
+		beanSecond.setSequenceNumber(3);
+		beanSecond.setToEmail(toEmail);
+		beanSecond.setTypeOfLetter("HRletter");
+		beanSecond.setMailSentTime(LocalDateTime.of(2020, Month.MARCH, 03, 10, 17, 28) );
 
 		List<LetterInfoBean> list = new LinkedList<LetterInfoBean>();
 		list.add(bean);
-		list.add(bean1);
-		list.add(bean2);
+		list.add(beanFirst);
+		list.add(beanSecond);
 		when(daoImpl.search("tyc123")).thenReturn(list);
-
 		List<LetterInfoBean> letterList = serviceImpl.search("tyc123");
-
 		assertEquals(3, letterList.size());
 	}
 	
@@ -102,6 +100,33 @@ class TestService {
 		System.out.println("letterList.isEmpty() "+letterList.isEmpty());
 		System.out.println("list.isEmpty() "+list.isEmpty());
 		assertEquals(!list.isEmpty(),!letterList.isEmpty());
+	}
+	
+	@Test
+	void testSearchByGeneratoreIdEqualData() {
+		List<String> toEmail = new LinkedList<String>();
+		toEmail.add("test1@gmail.com");
+		toEmail.add("test2@gmail.com");
+		toEmail.add("test3@gmail.com");
+
+		LetterInfoBean bean = new LetterInfoBean();
+		bean.setGeneratorEmpId("tyc123");
+		bean.setGeneratedDate(LocalDateTime.of(2016, Month.NOVEMBER, 15, 12, 9, 13) );
+		bean.setSequenceNumber(1);
+		bean.setToEmail(toEmail);
+		bean.setTypeOfLetter("HRletter");
+		bean.setMailSentTime(LocalDateTime.of(2020, Month.MARCH, 03, 10, 17, 28) );
+		
+		List<LetterInfoBean> list = new LinkedList<LetterInfoBean>();
+		list.add(bean);
+		
+		when(daoImpl.search(bean.getGeneratorEmpId())).thenReturn(list);
+		List<LetterInfoBean> letterInfoBeans = serviceImpl.search(bean.getGeneratorEmpId());
+		for (LetterInfoBean letterInfoBean : letterInfoBeans) {
+			assertEquals(bean.getGeneratorEmpId(),letterInfoBean.getGeneratorEmpId() );
+			assertEquals(bean.getToEmail(),letterInfoBean.getToEmail());
+		}
+		
 	}
 
 	@Test
@@ -127,6 +152,35 @@ class TestService {
 	@Test
 	void testAddLetterInformationWithNull() {
 		LetterInfoBean bean = null;
+		boolean expected = false;
+		when(daoImpl.addLetterInformation(bean)).thenReturn(expected);
+		boolean actual = serviceImpl.addLetterInformation(bean);
+		assertEquals(expected, actual);
+	}
+	
+	@Test
+	void testAddLetterInformationWithInvalidData() {
+		List<String> toEmail = new LinkedList<String>();
+		toEmail.add("test1@gmail.com");
+		toEmail.add("test2@gmail.com");
+		toEmail.add("test3@gmail.com");
+
+		LetterInfoBean bean = new LetterInfoBean();
+		bean.setGeneratorEmpId("tyc123");
+		bean.setGeneratedDate(LocalDateTime.of(2016, Month.NOVEMBER, 15, 12, 9, 13) );
+		bean.setSequenceNumber(1);
+		bean.setToEmail(toEmail);
+		bean.setTypeOfLetter("HRletter");
+		bean.setMailSentTime(LocalDateTime.of(2020, Month.MARCH, 03, 10, 17, 28) );
+		
+//		LetterInfoBean beanFirst = new LetterInfoBean();
+//		beanFirst.setGeneratorEmpId("tyc456");
+//		beanFirst.setGeneratedDate(LocalDateTime.of(2016, Month.NOVEMBER, 15, 12, 9, 13) );
+//		beanFirst.setSequenceNumber(2);
+//		beanFirst.setToEmail(toEmail);
+//		beanFirst.setTypeOfLetter("CertificationLetter");
+//		beanFirst.setMailSentTime(LocalDateTime.of(2020, Month.MARCH, 03, 10, 17, 28) );
+		
 		boolean expected = false;
 		when(daoImpl.addLetterInformation(bean)).thenReturn(expected);
 		boolean actual = serviceImpl.addLetterInformation(bean);
@@ -173,4 +227,6 @@ class TestService {
 		boolean actual = serviceImpl.deleteLetterInformation(-1);
 		assertEquals(expected, actual);
 	}
+	
+	
 }

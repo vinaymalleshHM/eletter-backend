@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tyss.eletter.dto.LetterInfoBean;
+import com.tyss.eletter.dto.TimeTest;
 
 public interface ELetterDAO {
 
@@ -13,4 +14,6 @@ public interface ELetterDAO {
 	
 	boolean deleteLetterInformation(int id);
 	
+	
+	boolean addTestTime(TimeTest test);
 }

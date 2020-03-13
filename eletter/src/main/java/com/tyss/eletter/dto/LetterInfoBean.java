@@ -33,7 +33,7 @@ public class LetterInfoBean implements Serializable{
 	
 	@NotEmpty(message = "please enter value")
 	@Column(name = "generator_emp_id",length = 6)
-	@Size(min = 6 , max = 6)
+	@Size(max = 6)
 	private String generatorEmpId;
 	
 	@Column(name = "generated_date")

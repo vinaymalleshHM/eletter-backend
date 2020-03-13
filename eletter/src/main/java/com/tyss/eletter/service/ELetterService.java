@@ -3,6 +3,7 @@ package com.tyss.eletter.service;
 import java.util.List;
 
 import com.tyss.eletter.dto.LetterInfoBean;
+import com.tyss.eletter.dto.TimeTest;
 
 public interface ELetterService {
 	
@@ -11,4 +12,6 @@ public interface ELetterService {
 	List<LetterInfoBean> search(String name);
 	
 	boolean deleteLetterInformation(int  id);
+	
+	boolean addTestTime(TimeTest test);
 }
