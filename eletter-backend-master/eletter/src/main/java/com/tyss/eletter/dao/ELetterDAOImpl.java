@@ -8,6 +8,8 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceUnit;
 import javax.persistence.TypedQuery;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,16 +22,24 @@ public class ELetterDAOImpl implements ELetterDAO {
 	@PersistenceUnit
 	private EntityManagerFactory factory;
 
+//	static Logger log = LogManager.getLogger("prince");
+	 private static final Logger log = LogManager.getLogger(ELetterDAOImpl.class);
 
 	@Override
 	public boolean addLetterInformation(LetterInfoBean letterInfoBean) {
 		EntityManager manager = factory.createEntityManager();
 		EntityTransaction transaction = manager.getTransaction();
 		transaction.begin();
-		letterInfoBean.setActive(true);
-		manager.persist(letterInfoBean);
-		transaction.commit();
-		return true;
+		try {
+			letterInfoBean.setActive(true);
+			manager.persist(letterInfoBean);
+			transaction.commit();
+			return true;
+		} catch (Exception e) {
+			transaction.rollback();
+			log.debug("persist proublem");
+			return false;
+		}
 		
 	}
 
@@ -55,9 +65,16 @@ public class ELetterDAOImpl implements ELetterDAO {
 		transaction.begin();
 		LetterInfoBean record = manager.find(LetterInfoBean.class, id);
 		if (record!=null) {
-			record.setActive(false);
-			transaction.commit();
-			return true;
+			try {
+				record.setActive(false);
+				transaction.commit();
+				return true;
+				
+			} catch (Exception e) {
+				transaction.rollback();
+				log.error("error to perform delete operation");
+				return false;
+			}
 			
 		} else {
 			return false;
